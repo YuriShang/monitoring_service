@@ -14,16 +14,20 @@ class EventView(PydanticView):
             event_status, timeout = await timeout_control(last_event_time.event_time)
         else:
             event_status, timeout = 'FIRST EVENT', 0
-        res = await create_event(event=event, status=event_status, timeout=timeout, event_time=datetime.now())
-        return web.json_response()
+        current_time = datetime.now()
+        await create_event(event=event, status=event_status, timeout=timeout, event_time=current_time)
+        result = event.dict()
+        result.update({"status": event_status, "timeout": timeout,
+                       "event_time": current_time.strftime("%Y-%m-%d %H:%M:%S")})
+        return web.json_response(result)
 
     # Получаем событие по его id
     async def get(self, event_id: int):
         event = await get_event(event_id)
         if event is not None:
-            current_event = {event.id: {"service": event.service_name, "event_name": event.event_name,
+            current_event = {event.id: {"service_name": event.service_name, "event_name": event.event_name,
                                         "description": event.description,
-                                        "time": event.event_time.strftime("%Y-%m-%d %H:%M:%S"),
+                                        "event_time": event.event_time.strftime("%Y-%m-%d %H:%M:%S"),
                                         "timeout": event.timeout, "status": event.status}}
             return web.json_response(current_event)
         return web.json_response({"result": f"event with id={event_id} does not exist"})
@@ -41,9 +45,9 @@ class EventList(PydanticView):
         if event_list is not None:
             all_events = {}
             for event in event_list:
-                current_event = {event.id: {"service": event.service_name, "event_name": event.event_name,
+                current_event = {event.id: {"service_name": event.service_name, "event_name": event.event_name,
                                             "description": event.description,
-                                            "time": event.event_time.strftime("%Y-%m-%d %H:%M:%S"),
+                                            "event_time": event.event_time.strftime("%Y-%m-%d %H:%M:%S"),
                                             "timeout": event.timeout, "status": event.status}}
                 all_events.update(current_event)
             return web.json_response(all_events)

@@ -7,7 +7,7 @@ TIMEOUT = 5000  # ms
 
 async def timeout_control(last_event_time):
     timeout = datetime.now() - last_event_time
-    timeout = timeout.total_seconds() * 1000
+    timeout = int(timeout.total_seconds() * 1000)
     result = TIMEOUT - timeout
     if result > 0:
         return 'GOOD', timeout
