@@ -1,8 +1,7 @@
-import asyncio
+import logging
 from aiohttp import web
-from app.utils.config import config
 from app.models.database import database
-from app.routes.routes import EventView
+from app.routes.routes import EventView, EventList
 
 
 # Подключаемся к БД при старте приложения
@@ -22,11 +21,12 @@ def init_app():
     app.on_cleanup.append(cleanup)
 
     # Настраивем пути
-    app.router.add_view("/test", EventView)
-
+    app.router.add_view("/event", EventView)
+    app.router.add_view("/event_list", EventList)
     return app
 
 
 if __name__ == "__main__":
     app = init_app()
-    web.run_app(app, port=config["common"]["port"])
+    logging.basicConfig(level=logging.INFO)
+    web.run_app(app, port=8000)

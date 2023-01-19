@@ -1,7 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional
 
 
 class EventBase(BaseModel):
-    name: str
+    service_name: str
+    event_name: str
     description: str

@@ -1,5 +1,0 @@
-common:
-  port: 8080 # порт, на котором будет запускаться наше приложение
-postgres:
-  database_url: postgresql://testuser:password@localhost/testdb
-  require_ssl: false # стоит ли шифровать соединение с базой
