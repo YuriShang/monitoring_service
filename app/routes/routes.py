@@ -30,7 +30,7 @@ class EventView(PydanticView):
                                         "event_time": event.event_time.strftime("%Y-%m-%d %H:%M:%S"),
                                         "timeout": event.timeout, "status": event.status}}
             return web.json_response(current_event)
-        return web.json_response({"result": f"event with id={event_id} does not exist"})
+        return web.json_response({"result": f"event with id={event_id} does not exist"}, status=404)
 
 
 # Получаем список с указанным количеством последних событий
