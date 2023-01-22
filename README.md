@@ -22,4 +22,4 @@
    ```
     
   2) Получить событие по его ID `(GET)` - `host:port/event?event_id=1`
-  3) Получить список последних событий в необходимом количестве `(GET)` - `host:port/event?service=test&chunk_size=10`
+  3) Получить список последних событий в необходимом количестве `(GET)` - `host:port/event_list?service=test1&chunk_size=10`
